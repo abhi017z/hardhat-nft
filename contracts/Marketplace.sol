@@ -1,24 +1,18 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
-
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-
 contract Marketplace {
     struct Listing {
         address seller;
         uint256 price;
         bool listed;
     }
-
     mapping(address => mapping(uint256 => Listing)) private _listings;
-
     event ItemListed(
         address nftContract,
         uint256 tokenId,
         address seller,
         uint256 price
     );
-
     event ItemSold(
         address nftContract,
         uint256 tokenId,
@@ -26,13 +20,11 @@ contract Marketplace {
         address buyer,
         uint256 price
     );
-
     event ListingCancelled(
         address nftContract,
         uint256 tokenId,
         address seller
     );
-
     function listItem(
         address nftContract,
         uint256 tokenId,
@@ -47,7 +39,6 @@ contract Marketplace {
             IERC721(nftContract).getApproved(tokenId) == address(this),
             "Marketplace must be approved"
         );
-
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
         _listings[nftContract][tokenId] = Listing({
